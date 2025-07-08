@@ -318,8 +318,7 @@ function createHirelingType(HirelingName)
 		["supplies"] = {
 			{ itemName = "brown mushroom", clientId = 3725, buy = 10 },
 			{ itemName = "ham", clientId = 3582, buy = 10 },
-			{ itemName = "meat", clientId = 3577, buy = 5 },
-			{ itemName = "shapeshifter ring", clientId = 907, buy = 5500, subType = 15 },
+			{ itemName = "meat", clientId = 3577, buy = 5 }
 		},
 		["tools"] = {
 			{ itemName = "basket", clientId = 2855, buy = 6 },
@@ -347,9 +346,7 @@ function createHirelingType(HirelingName)
 			{ itemName = "parcel", clientId = 3503, buy = 15 },
 		},
 		["buy loot"] = {
-			-- Sell all loot in loot pouch
 			{ itemName = "talon", clientId = 3034, sell = 320 },
-			{ itemName = "all loot", clientId = 23721, sell = 1 },
 
 			-- Alaistar
 			{ itemName = "cowbell", clientId = 21204, sell = 210 },

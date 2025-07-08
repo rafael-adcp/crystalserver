@@ -1,3 +1,8 @@
+-- Summary
+-- Chances: 50% for high/low/odd/even, 16.67% for choosing a number.
+-- Payouts: Lower than fair odds.
+-- Result: The system is not "fair" (in the sense of no house edge), but this is typical for casino games.
+-- If you want a truly fair game (no house edge), set payouts to 2x 
 local internalNpcName = "Cassino"
 local npcType = Game.createNpcType(internalNpcName)
 local npcConfig = {}
@@ -25,10 +30,10 @@ npcConfig.flags = {
 
 local config = {
 	bet = {
-		min = 10000, -- gold coins // 30k
+		min = 10000, -- gold coins
 		max = 10000000000,
-		win = 180, -- 170% high/low
-		winNum = 500, -- 300% numbers
+		win = 180, -- X% high/low
+		winNum = 500, -- X% numbers
 	},
 	playerPosition = Position(32352, 32226, 7), -- NpcPos(x-2) player must stay on this position to talk with npc
 	dicerCounter = Position(32352, 32225, 7), --	NpcPos(x-1, y-1) 	counter position
@@ -135,6 +140,50 @@ local function greetCallback(npc, creature)
 	return true
 end
 
+local function sayToPlayerAndHandler(npc, phrase, creature, talktype, pos)
+	npc:say(phrase, talktype or TALKTYPE_SAY, false, true, pos or npc:getPosition())
+	npcHandler:say(phrase, npc, creature)
+end
+
+local function handleWin(npc, creature, amount)
+	local phrase = "You won! Here's your " .. amount .. " gold coins."
+	sayToPlayerAndHandler(npc, phrase, creature)
+	config.dicerCounter:sendMagicEffect(math.random(29, 31))
+	for _, coin in pairs(createMoney(amount)) do
+		Game.createItem(coin[1], coin[2], config.dicerCounter)
+	end
+end
+
+local function handleLoss(npc, creature, bet)
+	local phrase = "You have lost your " .. bet .. " gold coins."
+	sayToPlayerAndHandler(npc, phrase, creature)
+end
+
+local function checkBetResult(npc, creature, bet, number, message)
+	local win = false
+	local payout = config.bet.win
+
+	if table.contains({ "low", "l" }, message) then
+		win = table.contains({ 1, 2, 3 }, number)
+	elseif table.contains({ "high", "h" }, message) then
+		win = table.contains({ 4, 5, 6 }, number)
+	elseif table.contains({ "odd", "impar" }, message) then
+		win = table.contains({ 1, 3, 5 }, number)
+	elseif table.contains({ "par", "even" }, message) then
+		win = table.contains({ 2, 4, 6 }, number)
+	elseif table.contains({ "1", "2", "3", "4", "5", "6" }, message) then
+		win = number == tonumber(message)
+		payout = config.bet.winNum
+	end
+
+	if win then
+		local wonMoney = math.ceil(bet * (payout / 100))
+		handleWin(npc, creature, wonMoney)
+	else
+		handleLoss(npc, creature, bet)
+	end
+end
+
 local function creatureSayCallback(npc, creature, type, message)
 	local player = Player(creature)
 	local playerId = player:getId()
@@ -150,7 +199,7 @@ local function creatureSayCallback(npc, creature, type, message)
 	if table.contains({ "low", "high", "h", "l", "1", "2", "3", "4", "5", "6", "odd", "impar", "par", "even" }, message) then
 		local bet = getBetValue()
 		if not bet then
-			npcHandler:say("Your bet is lower than the min {" .. config.bet.min .. "}gps or higher than the max {" .. config.bet.max .. "}gps bet.", npc, creature)
+			sayToPlayerAndHandler(npc, "Your bet is lower than the min {" .. config.bet.min .. "}gps or higher than the max {" .. config.bet.max .. "}gps bet.", creature)
 			npcHandler:setTopic(playerId, 0)
 			return true
 		end
@@ -172,64 +221,10 @@ local function creatureSayCallback(npc, creature, type, message)
 		else
 			Game.createItem((5791 + number), 1, config.diePos)
 		end
-		npc:say(npc:getName() .. " rolled a " .. number .. ".", TALKTYPE_MONSTER_SAY, false, true, config.diePos)
-		config.diePos:sendMagicEffect(CONST_ME_CRAPS)
-		if table.contains({ "low", "l" }, message) then
-			if table.contains({ 1, 2, 3 }, number) then
-				local wonMoney = math.ceil(bet * (config.bet.win / 100))
-				npc:say("You won! Here's your " .. wonMoney .. " gold coins.", TALKTYPE_SAY)
-				config.dicerCounter:sendMagicEffect(math.random(29, 31))
-				for _, coin in pairs(createMoney(wonMoney)) do
-					Game.createItem(coin[1], coin[2], config.dicerCounter)
-				end
-			else
-				npc:say("You have lost your " .. bet .. " gold coins.", TALKTYPE_SAY)
-			end
-		elseif table.contains({ "high", "h" }, message) then
-			if table.contains({ 4, 5, 6 }, number) then
-				local wonMoney = math.ceil(bet * (config.bet.win / 100))
-				npc:say("You won! Here's your " .. wonMoney .. " gold coins.", TALKTYPE_SAY)
-				config.dicerCounter:sendMagicEffect(math.random(29, 31))
-				for _, coin in pairs(createMoney(wonMoney)) do
-					Game.createItem(coin[1], coin[2], config.dicerCounter)
-				end
-			else
-				npc:say("You have lost your " .. bet .. " gold coins.", TALKTYPE_SAY)
-			end
-		elseif table.contains({ "odd", "impar" }, message) then
-			if table.contains({ 1, 3, 5 }, number) then
-				local wonMoney = math.ceil(bet * (config.bet.win / 100))
-				npc:say("You won! Here's your " .. wonMoney .. " gold coins.", TALKTYPE_SAY)
-				config.dicerCounter:sendMagicEffect(math.random(29, 31))
-				for _, coin in pairs(createMoney(wonMoney)) do
-					Game.createItem(coin[1], coin[2], config.dicerCounter)
-				end
-			else
-				npc:say("You have lost your " .. bet .. " gold coins.", TALKTYPE_SAY)
-			end
-		elseif table.contains({ "par", "even" }, message) then
-			if table.contains({ 2, 4, 6 }, number) then
-				local wonMoney = math.ceil(bet * (config.bet.win / 100))
-				npc:say("You won! Here's your " .. wonMoney .. " gold coins.", TALKTYPE_SAY)
-				config.dicerCounter:sendMagicEffect(math.random(29, 31))
-				for _, coin in pairs(createMoney(wonMoney)) do
-					Game.createItem(coin[1], coin[2], config.dicerCounter)
-				end
-			else
-				npc:say("You have lost your " .. bet .. " gold coins.", TALKTYPE_SAY)
-			end
-		elseif table.contains({ "1", "2", "3", "4", "5", "6" }, message) then
-			if number == tonumber(message) then
-				local wonMoney = math.ceil(bet * (config.bet.winNum / 100))
-				npc:say("You won! Here's your " .. wonMoney .. " gold coins.", TALKTYPE_SAY)
-				config.dicerCounter:sendMagicEffect(math.random(29, 31))
-				for _, coin in pairs(createMoney(wonMoney)) do
-					Game.createItem(coin[1], coin[2], config.dicerCounter)
-				end
-			else
-				npc:say("You have lost your " .. bet .. " gold coins.", TALKTYPE_SAY)
-			end
-		end
+		local diceRoll = npc:getName() .. " rolled a " .. number .. "."
+		sayToPlayerAndHandler(npc, diceRoll, creature)
+
+		checkBetResult(npc, creature, bet, number, message)
 	end
 	return true
 end
@@ -247,7 +242,28 @@ local function creatureMoveCallback(npc, player, fromPosition, toPosition)
 	return true
 end
 
-npcHandler:setMessage(MESSAGE_GREET, "Welcome to the Cassino! Here we play with: \n [PAYOUT 180%] {HIGH / LOW}: High for 4, 5, 6 and Low for 1, 2, and 3 - {ODD / EVEN }: Odd for 1, 3, 5 and Even for 2, 4 and 6 \n [PAYOUT 500%] {NUMBERS}: You choose the number, and if you get it right ... {$$$$$}")
+npcHandler:setMessage(MESSAGE_GREET, 
+string.format(
+	"Welcome to the Cassino!\n\n" ..
+	"To play, please follow these steps:\n" ..
+	"1. Stand on the depot near me.\n" ..
+	"2. Place your bet (coins) **on the tile directly in front of you (on top of the depot)**. Only gold, platinum, or crystal coins are accepted.\n" ..
+	"3. Minimum bet: %s gold. Maximum bet: %s gold.\n" ..
+	"4. Say one of the following to place your bet:\n" ..
+	"   - {HIGH} or {H}: Bet on 4, 5, or 6 (payout %d%%)\n" ..
+	"   - {LOW} or {L}: Bet on 1, 2, or 3 (payout %d%%)\n" ..
+	"   - {ODD} or {IMPAR}: Bet on 1, 3, or 5 (payout %d%%)\n" ..
+	"   - {EVEN} or {PAR}: Bet on 2, 4, or 6 (payout %d%%)\n" ..
+	"   - Or say a number (1-6) to bet on a specific number (payout %d%%)\n\n" ..
+	"If you win, your prize will appear on the counter tile. Good luck!",
+	config.bet.min,
+	config.bet.max,
+	config.bet.win,
+	config.bet.win,
+	config.bet.win,
+	config.bet.win,
+	config.bet.winNum
+))
 npcHandler:setMessage(MESSAGE_FAREWELL, "Good bye.")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Good bye.")
 

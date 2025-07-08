@@ -1,0 +1,294 @@
+-- ==============================================================================================================================================================================================================================================================================
+1 instance_configs.xml
+
+<instances>
+    <instance key="demon_hunt" price="300" duration="7200">
+        <entryTiles>
+            <tile x="1000" y="1000" z="7"/>
+            <tile x="1001" y="1000" z="7"/>
+            <tile x="1002" y="1000" z="7"/>
+            <tile x="1003" y="1000" z="7"/>
+            <tile x="1004" y="1000" z="7"/>
+        </entryTiles>
+        <rooms>
+            <room id="1" entryX="2000" entryY="2000" entryZ="7" leverX="1000" leverY="1000" leverZ="7"/>
+            <room id="2" entryX="2100" entryY="2000" entryZ="7" leverX="1010" leverY="1000" leverZ="7"/>
+        </rooms>
+    </instance>
+    <instance key="hydra_hunt" price="150" duration="7200">
+        <entryTiles>
+            <tile x="1100" y="1100" z="7"/>
+            <tile x="1101" y="1100" z="7"/>
+            <tile x="1102" y="1100" z="7"/>
+            <tile x="1103" y="1100" z="7"/>
+            <tile x="1104" y="1100" z="7"/>
+        </entryTiles>
+        <rooms>
+            <room id="1" entryX="2200" entryY="2200" entryZ="7" leverX="1100" leverY="1100" leverZ="7"/>
+            <room id="2" entryX="2210" entryY="2200" entryZ="7" leverX="1110" leverY="1100" leverZ="7"/>
+        </rooms>
+    </instance>
+</instances>
+
+
+-- ==============================================================================================================================================================================================================================================================================
+2. instance_config_loader.lua
+INSTANCE_CONFIGS = {}
+
+function loadInstanceConfigs()
+    local doc = xmlLoadFile('data/XML/instance_configs.xml')
+    for instanceNode in doc:children() do
+        local key = instanceNode:attr('key')
+        local price = tonumber(instanceNode:attr('price'))
+        local duration = tonumber(instanceNode:attr('duration'))
+        local entryTiles, rooms = {}, {}
+        for child in instanceNode:children() do
+            if child:name() == 'entryTiles' then
+                for tile in child:children() do
+                    table.insert(entryTiles, Position(tonumber(tile:attr('x')), tonumber(tile:attr('y')), tonumber(tile:attr('z'))))
+                end
+            elseif child:name() == 'rooms' then
+                for room in child:children() do
+                    table.insert(rooms, {
+                        id = tonumber(room:attr('id')),
+                        entry = Position(tonumber(room:attr('entryX')), tonumber(room:attr('entryY')), tonumber(room:attr('entryZ'))),
+                        lever = Position(tonumber(room:attr('leverX')), tonumber(room:attr('leverY')), tonumber(room:attr('leverZ')))
+                    })
+                end
+            end
+        end
+        INSTANCE_CONFIGS[key] = {price = price, duration = duration, entryTiles = entryTiles, rooms = rooms}
+    end
+end
+
+loadInstanceConfigs()
+
+
+
+-- ==============================================================================================================================================================================================================================================================================
+3. SQL Table
+-- Run this in your database (e.g., phpMyAdmin or SQLite)
+CREATE TABLE IF NOT EXISTS hunt_instances (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    instance_key VARCHAR(64),
+    room_id INT,
+    allowed_guids TEXT,
+    start_time INT,
+    expire_time INT
+);
+
+-- ==============================================================================================================================================================================================================================================================================
+4 lever script
+dofile('data/lib/instance_config_loader.lua')
+
+local TIBIA_COIN_ID = 6527
+
+function getFreeRoom(instanceKey)
+    local config = INSTANCE_CONFIGS[instanceKey]
+    for _, room in ipairs(config.rooms) do
+        local resultId = db.storeQuery("SELECT id FROM hunt_instances WHERE instance_key = '" .. instanceKey .. "' AND room_id = " .. room.id .. " AND expire_time > " .. os.time())
+        if not resultId then
+            return room
+        end
+    end
+    return nil
+end
+
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    local instanceKey = item:getAttribute(ITEM_ATTRIBUTE_DESCRIPTION) -- or use actionid/uniqueid
+    local config = INSTANCE_CONFIGS[instanceKey]
+    if not config then
+        player:sendTextMessage(MESSAGE_STATUS_SMALL, "This lever is not configured for an instance.")
+        return true
+    end
+
+    local room = getFreeRoom(instanceKey)
+    if not room then
+        player:sendTextMessage(MESSAGE_STATUS_SMALL, "All rooms are currently in use. Please wait.")
+        return true
+    end
+
+    -- Gather players
+    local players = {}
+    for _, pos in ipairs(config.entryTiles) do
+        local tile = Tile(pos)
+        if tile then
+            local topCreature = tile:getTopCreature()
+            if topCreature and topCreature:isPlayer() then
+                table.insert(players, topCreature)
+            end
+        end
+    end
+
+    if #players == 0 then
+        player:sendTextMessage(MESSAGE_STATUS_SMALL, "No players on the entry tiles.")
+        return true
+    end
+
+    -- Check Tibia Coin payment
+    for _, p in ipairs(players) do
+        if p:getItemCount(TIBIA_COIN_ID) < config.price then
+            p:sendTextMessage(MESSAGE_STATUS_SMALL, "You need at least " .. config.price .. " Tibia Coins to enter.")
+            return true
+        end
+    end
+
+    -- Deduct coins
+    for _, p in ipairs(players) do
+        p:removeItem(TIBIA_COIN_ID, config.price)
+    end
+
+    -- Save instance to DB
+    local allowedGUIDs = {}
+    for _, p in ipairs(players) do
+        table.insert(allowedGUIDs, p:getGuid())
+    end
+    local guidString = table.concat(allowedGUIDs, ",")
+    local now = os.time()
+    local expire = now + config.duration
+    db.query(string.format("INSERT INTO hunt_instances (instance_key, room_id, allowed_guids, start_time, expire_time) VALUES ('%s', %d, '%s', %d, %d)",
+        instanceKey, room.id, guidString, now, expire))
+
+    -- Teleport players
+    for _, p in ipairs(players) do
+        p:teleportTo(room.entry)
+        p:sendTextMessage(MESSAGE_INFO_DESCR, "You have entered your private hunt instance!")
+    end
+
+    return true
+end
+
+
+-- ==============================================================================================================================================================================================================================================================================
+5. Movement Script (Access Control)
+dofile('data/lib/instance_config_loader.lua')
+
+function isPlayerAllowed(instanceKey, roomId, playerGuid)
+    local resultId = db.storeQuery("SELECT allowed_guids, expire_time FROM hunt_instances WHERE instance_key = '" .. instanceKey .. "' AND room_id = " .. roomId .. " AND expire_time > " .. os.time())
+    if resultId then
+        local allowed = result.getString(resultId, "allowed_guids")
+        local expire = result.getNumber(resultId, "expire_time")
+        result.free(resultId)
+        for guid in string.gmatch(allowed, '([^,]+)') do
+            if tonumber(guid) == playerGuid then
+                return true, expire
+            end
+        end
+    end
+    return false, 0
+end
+
+function onStepIn(creature, item, position, fromPosition)
+    if not creature:isPlayer() then return true end
+
+    for key, config in pairs(INSTANCE_CONFIGS) do
+        for _, room in ipairs(config.rooms) do
+            local area = {from = room.entry, to = Position(room.entry.x + 9, room.entry.y + 9, room.entry.z)} -- adjust area size
+            if position.x >= area.from.x and position.x <= area.to.x and
+               position.y >= area.from.y and position.y <= area.to.y and
+               position.z == area.from.z then
+
+                local allowed, expire = isPlayerAllowed(key, room.id, creature:getGuid())
+                if not allowed then
+                    creature:teleportTo(fromPosition)
+                    creature:sendTextMessage(MESSAGE_STATUS_SMALL, "You are not allowed in this instance.")
+                    return false
+                end
+                if os.time() > expire then
+                    creature:teleportTo(room.lever)
+                    creature:sendTextMessage(MESSAGE_STATUS_SMALL, "Your instance time has expired.")
+                    db.query("DELETE FROM hunt_instances WHERE instance_key = '" .. key .. "' AND room_id = " .. room.id)
+                    return false
+                end
+                break
+            end
+        end
+    end
+    return true
+end
+
+-- ==============================================================================================================================================================================================================================================================================
+6. Instance Cleanup (Global Event)
+dofile('data/lib/instance_config_loader.lua')
+
+function onThink(interval)
+    local now = os.time()
+    local resultId = db.storeQuery("SELECT id, instance_key, room_id FROM hunt_instances WHERE expire_time <= " .. now)
+    if resultId then
+        repeat
+            local key = result.getString(resultId, "instance_key")
+            local roomId = result.getNumber(resultId, "room_id")
+            local config = INSTANCE_CONFIGS[key]
+            if config then
+                for _, room in ipairs(config.rooms) do
+                    if room.id == roomId then
+                        -- Kick all players in the room
+                        local area = {from = room.entry, to = Position(room.entry.x + 9, room.entry.y + 9, room.entry.z)} -- adjust area size
+                        for x = area.from.x, area.to.x do
+                            for y = area.from.y, area.to.y do
+                                local tile = Tile(Position(x, y, area.from.z))
+                                if tile then
+                                    local creature = tile:getTopCreature()
+                                    if creature and creature:isPlayer() then
+                                        creature:teleportTo(room.lever)
+                                        creature:sendTextMessage(MESSAGE_STATUS_SMALL, "Your instance time has expired.")
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            db.query("DELETE FROM hunt_instances WHERE id = " .. result.getNumber(resultId, "id"))
+        until not result.next(resultId)
+        result.free(resultId)
+    end
+    return true
+end
+
+-- 
+regiser the global event in globalevents.xml:
+
+<globalevents>
+    <globalevent name="instance_cleanup" interval="60" script="instance_cleanup.lua"/>
+</globalevents>
+
+
+8. Summary
+XML: All instance configs, rooms, prices, entry points.
+DB: Tracks active instances, allowed players, expiration.
+Lua: Loads XML, assigns rooms, persists state, handles access and cleanup.
+Map: Each room is a physical copy at different coordinates.
+
+
+Lua scripts go in data/globalevents/scripts/
+XML registration is in data/globalevents/globalevents.xml
+
+
+
+
+2. RME Python Scripting (Advanced, Windows only)
+RME supports Python scripts (see File > Run Script...).
+You can write a script to copy a region and paste it at multiple offsets.
+
+Example Python Script for RME:
+
+# This script must be run from RME's scripting console (File > Run Script...)
+# Adjust these values:
+source_from = Position(1000, 1000, 7)
+source_to = Position(1010, 1010, 7)
+copies = 10
+x_offset = 20  # How far apart each copy is
+
+for i in range(copies):
+    dx = x_offset * i
+    dy = 0
+    dz = 0
+    map.copyArea(source_from, source_to, Position(source_from.x + dx, source_from.y + dy, source_from.z + dz))
+
+
+How to use:
+Open RME, load your map.
+Go to File > Run Script...
+Paste and adjust the script above.
+Run it.

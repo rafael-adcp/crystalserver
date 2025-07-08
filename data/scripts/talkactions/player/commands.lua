@@ -17,7 +17,7 @@ function commands.onSay(player, words, param)
 					text = text .. " " .. talkaction:getDescription()
 				end
 
-				text = text .. "\n\n"
+				text = text .. "\n"
 			end
 		end
 	end
