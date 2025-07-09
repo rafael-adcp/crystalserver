@@ -1,4 +1,4 @@
-local internalNpcName = "Zuma Magehide"
+local internalNpcName = "Food Seller"
 local npcType = Game.createNpcType(internalNpcName)
 local npcConfig = {}
 
@@ -11,12 +11,7 @@ npcConfig.walkInterval = 2000
 npcConfig.walkRadius = 2
 
 npcConfig.outfit = {
-	lookType = 138,
-	lookHead = 58,
-	lookBody = 19,
-	lookLegs = 0,
-	lookFeet = 132,
-	lookAddons = 3,
+	lookType = 104,
 }
 
 npcConfig.flags = {
@@ -53,32 +48,36 @@ end
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 npcConfig.shop = {
-	{ itemName = "axe ring", clientId = 3092, buy = 500 },
-	{ itemName = "bronze amulet", clientId = 3056, buy = 100, count = 200 },
-	{ itemName = "club ring", clientId = 3093, buy = 500 },
-	{ itemName = "dragon necklace", clientId = 3085, buy = 1000, count = 200 },
-	{ itemName = "dwarven ring", clientId = 3097, buy = 3000 },
-	{ itemName = "elven amulet", clientId = 3082, buy = 500, count = 50 },
-	{ itemName = "energy ring", clientId = 3051, buy = 5000 },
-	{ itemName = "garlic necklace", clientId = 3083, buy = 100, count = 150 },
-	{ itemName = "life ring", clientId = 3052, buy = 900 },
-	{ itemName = "might ring", clientId = 3048, buy = 15000, count = 20 },
-	{ itemName = "power ring", clientId = 3050, buy = 100 },
-	{ itemName = "protection amulet", clientId = 3084, buy = 700, count = 250 },
-	{ itemName = "ring of healing", clientId = 3098, buy = 2000 },
-	{ itemName = "silver amulet", clientId = 3054, buy = 100, count = 200 },
-	{ itemName = "stealth ring", clientId = 3049, buy = 5000 },
-	{ itemName = "stone skin amulet", clientId = 3081, buy = 15000, count = 5 },
-	{ itemName = "strange talisman", clientId = 3045, buy = 100, count = 200 },
-	{ itemName = "sword ring", clientId = 3091, buy = 500 },
-	{ itemName = "time ring", clientId = 3053, buy = 5000 },
-	
-	
+-- food npc de house
+{ itemName = "roasted wyvern wings", clientId = 29408, buy = 15000},
+{ itemName = "carrot pie" , clientId = 29409, buy = 15000},
+{ itemName = "tropical marinated tiger", clientId = 29410, buy = 15000},
+{ itemName = "delicatessen salad" , clientId = 29411, buy = 15000},
+{ itemName = "chilli con carniphila", clientId = 29412, buy = 15000},
+{ itemName = "svargrond salmon filet", clientId = 29413, buy = 15000},
+{ itemName = "carrion casserole" , clientId = 29414, buy = 15000},
+{ itemName = "consecrated beef" , clientId = 29415, buy = 15000},
+{ itemName = "overcooked noodle" , clientId = 29416, buy = 15000}, 
 	
 
-	{ itemName = "gill necklace", clientId = 16108, buy = 7500, count=750 },
-	{ itemName = "prismatic necklace", clientId = 16113, buy = 7500, count=750 },
-	{ itemName = "prismatic ring", clientId = 16114, buy = 50000 },
+-- other useful foods
+{  itemName="demonic candy ball", clientid = 11587, buy = 500000},
+{  itemName="sweet mangonaise elixir", clientid = 11588, buy = 500000},
+{  itemName="carrot cake", clientid = 9087, buy = 500000},
+{  itemName="coconut shrimp bake", clientid = 11584, buy = 500000},
+{  itemName="hydra tongue salad", clientid = 9080, buy = 500000},
+{  itemName="northern fishburger", clientid = 9088, buy = 500000},
+{  itemName="pot of blackjack", clientid = 11586, buy = 500000},
+{  itemName="roasted dragon wings", clientid = 9081, buy = 500000},
+{  itemName="tropical fried terrorbird", clientid = 9082, buy = 500000},
+{  itemName="veggie casserole", clientid = 9084, buy = 500000},
+{  itemName="banana chocolate shake", clientid = 9083, buy = 1000000},
+{  itemName="blessed steak", clientid = 9086, buy = 1000000},
+{  itemName="filled jalapeno peppers", clientid = 9085, buy = 1000000},
+{  itemName="rotworm stew", clientid = 9079, buy = 1000000},
+
+
+	
 }
 
 -- On buy npc shop message

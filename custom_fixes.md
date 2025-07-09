@@ -1,0 +1,2 @@
+# Custon fixes
+- for gold coin / platitum / cyrstal to change upon click, make sure to use `assets-editor` and update them to not be `multi-use` once file is updated, place it under the client and on the server for assets to be properly updated and used.

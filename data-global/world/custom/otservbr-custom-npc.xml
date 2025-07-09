@@ -3,6 +3,12 @@
 	<npc centerx="1014" centery="1024" centerz="5" radius="2">
 		<npc name="Tamoril" x="-1" y="0" z="5" spawntime="90" direction="2" />
 	</npc>
+	<npc centerx="983" centery="951" centerz="6" radius="1">
+		<npc name="The Lootmonger" x="0" y="0" z="6" spawntime="60" />
+	</npc>
+	<npc centerx="985" centery="991" centerz="6" radius="1">
+		<npc name="Battlemart" x="0" y="0" z="6" spawntime="60" />
+	</npc>
 	<npc centerx="988" centery="1023" centerz="6" radius="1">
 		<npc name="Haroun" x="0" y="0" z="6" spawntime="60" />
 	</npc>
@@ -24,12 +30,8 @@
 	<npc centerx="998" centery="1037" centerz="6" radius="1">
 		<npc name="Rashid of Island" x="0" y="-1" z="6" spawntime="60" />
 	</npc>
-	<npc centerx="1059" centery="1018" centerz="7" radius="3">
-		<npc name="Zuma Magehide" x="-1" y="1" z="7" spawntime="60" />
-	</npc>
-	<npc centerx="1066" centery="1018" centerz="7" radius="3">
-		<npc name="Runtel Blackspark" x="0" y="3" z="7" spawntime="60" />
-	</npc>
+	<npc centerx="1059" centery="1018" centerz="7" radius="3" />
+	<npc centerx="1066" centery="1018" centerz="7" radius="3" />
 	<npc centerx="1003" centery="1019" centerz="7" radius="1">
 		<npc name="Hanna" x="0" y="0" z="7" spawntime="60" />
 	</npc>
@@ -45,25 +47,25 @@
 	<npc centerx="1001" centery="1036" centerz="7" radius="1">
 		<npc name="Lailene" x="0" y="0" z="7" spawntime="60" />
 	</npc>
-	<npc centerx="32354" centery="32226" centerz="7" radius="1">
-		<npc name="Cassino" x="0" y="0" z="7" spawntime="60" />
-	</npc>
-	<npc centerx="985" centery="991" centerz="6" radius="1">
-		<npc name="Battlemart" x="0" y="0" z="7" spawntime="60" />
-	</npc>
-	<npc centerx="983" centery="951" centerz="6" radius="1">
-		<npc name="The Lootmonger" x="0" y="0" z="7" spawntime="60" />
-	</npc>
-
-	<!-- npc uteis em thais-->
-	<npc centerx="32349" centery="32223" centerz="7" radius="1">
-		<npc name="Primo Do Rashid" x="0" y="0" z="7" spawntime="60" />
+	<npc centerx="32343" centery="32215" centerz="7" radius="1">
+		<npc name="Archery" x="0" y="0" z="7" spawntime="60" />
 	</npc>
 	<npc centerx="32342" centery="32220" centerz="7" radius="1">
 		<npc name="Imbuement Assistant" x="0" y="0" z="7" spawntime="60" />
 	</npc>
-
+	<npc centerx="32349" centery="32223" centerz="7" radius="1">
+		<npc name="Primo Do Rashid" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="32341" centery="32224" centerz="7" radius="1">
+		<npc name="Food Seller" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="32354" centery="32226" centerz="7" radius="1">
+		<npc name="Cassino" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="32346" centery="32227" centerz="7" radius="1">
+		<npc name="Zuma Magehide" x="0" y="0" z="7" spawntime="60" />
+	</npc>
 	<npc centerx="32349" centery="32231" centerz="7" radius="1">
-		<npc name="OtServer Hireling" x="0" y="0" z="7" spawntime="60" />
+		<npc name="Runtel Blackspark" x="0" y="0" z="7" spawntime="60" />
 	</npc>
 </npcs>
