@@ -18,17 +18,32 @@
 	<npc centerx="1002" centery="1025" centerz="6" radius="1">
 		<npc name="Esrik" x="-1" y="1" z="6" spawntime="60" />
 	</npc>
+	<npc centerx="945" centery="1027" centerz="6" radius="1">
+		<npc name="Archery" x="0" y="0" z="6" spawntime="60" />
+	</npc>
+	<npc centerx="957" centery="1027" centerz="6" radius="1">
+		<npc name="Zuma Magehide" x="0" y="0" z="6" spawntime="60" />
+	</npc>
 	<npc centerx="984" centery="1030" centerz="6" radius="1">
 		<npc name="Yasir" x="1" y="0" z="6" spawntime="60" />
 	</npc>
 	<npc centerx="1004" centery="1031" centerz="6" radius="1">
 		<npc name="Yaman" x="0" y="1" z="6" spawntime="60" />
 	</npc>
+	<npc centerx="951" centery="1032" centerz="6" radius="1">
+		<npc name="Primo Do Rashid" x="0" y="0" z="6" spawntime="60" />
+	</npc>
 	<npc centerx="990" centery="1036" centerz="6" radius="1">
 		<npc name="Nah'Bob" x="1" y="0" z="6" spawntime="60" />
 	</npc>
 	<npc centerx="998" centery="1037" centerz="6" radius="1">
 		<npc name="Rashid of Island" x="0" y="-1" z="6" spawntime="60" />
+	</npc>
+	<npc centerx="945" centery="1038" centerz="6" radius="1">
+		<npc name="Food Seller" x="0" y="0" z="6" spawntime="60" />
+	</npc>
+	<npc centerx="957" centery="1038" centerz="6" radius="1">
+		<npc name="Runtel Blackspark" x="0" y="0" z="6" spawntime="60" />
 	</npc>
 	<npc centerx="1059" centery="1018" centerz="7" radius="3" />
 	<npc centerx="1066" centery="1018" centerz="7" radius="3" />
@@ -47,9 +62,6 @@
 	<npc centerx="1001" centery="1036" centerz="7" radius="1">
 		<npc name="Lailene" x="0" y="0" z="7" spawntime="60" />
 	</npc>
-	<npc centerx="32343" centery="32215" centerz="7" radius="1">
-		<npc name="Archery" x="0" y="0" z="7" spawntime="60" />
-	</npc>
 	<npc centerx="32342" centery="32220" centerz="7" radius="1">
 		<npc name="Imbuement Assistant" x="0" y="0" z="7" spawntime="60" />
 	</npc>
@@ -58,6 +70,9 @@
 	</npc>
 	<npc centerx="32341" centery="32224" centerz="7" radius="1">
 		<npc name="Food Seller" x="0" y="0" z="7" spawntime="60" />
+	</npc>
+	<npc centerx="32346" centery="32224" centerz="7" radius="1">
+		<npc name="Archery" x="0" y="0" z="7" spawntime="60" />
 	</npc>
 	<npc centerx="32354" centery="32226" centerz="7" radius="1">
 		<npc name="Cassino" x="0" y="0" z="7" spawntime="60" />
