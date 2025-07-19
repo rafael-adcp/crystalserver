@@ -479,7 +479,7 @@ resetSessionsOnStartup = false
 -- NOTE: disableLegacyRaids: set to true to disable legacy XML raids
 -- NOTE: logPlayersStatements will log all player statements.
 allowChangeOutfit = true
-freePremium = false
+freePremium = true
 kickIdlePlayerAfterMinutes = 15
 maxMessageBuffer = 4
 allowWalkthrough = true
@@ -563,17 +563,17 @@ rateKillingInTheNameOfPoints = 1
 
 -- Today regeneration condition over an loop every 1 second,
 -- So values which should regenerated less then 1 second or won't will work
-rateHealthRegen = 1.0
-rateHealthRegenSpeed = 1.0
-rateManaRegen = 1.0
-rateManaRegenSpeed = 1.0
+rateHealthRegen = 4.0
+rateHealthRegenSpeed = 2.0
+rateManaRegen = 4.0
+rateManaRegenSpeed = 2.0
 rateSoulRegen = 1.0
 rateSoulRegenSpeed = 1.0
 
 rateSpellCooldown = 1.0
 rateAttackSpeed = 1.0
 rateOfflineTrainingSpeed = rateAttackSpeed
-rateExerciseTrainingSpeed = rateAttackSpeed * 2 -- tweak here for rapid training
+rateExerciseTrainingSpeed = rateAttackSpeed * 4 -- tweak here for rapid training
 
 -- Monster rates
 rateMonsterHealth = 1.0
@@ -612,10 +612,10 @@ staminaTrainerDelay = 5
 staminaTrainerGain = 1
 
 -- Stamina in protect zone
-staminaPz = false
+staminaPz = true
 staminaOrangeDelay = 1
-staminaGreenDelay = 5
-staminaPzGain = 1
+staminaGreenDelay = 1
+staminaPzGain = 4
 
 -- Mounts
 playerAlwaysLoginMounted = false
