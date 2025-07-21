@@ -198,10 +198,34 @@
 	<monster centerx="824" centery="1053" centerz="6" radius="1">
 		<monster name="Animated Feather" x="0" y="0" z="6" spawntime="60" />
 	</monster>
+	<monster centerx="903" centery="1053" centerz="6" radius="1">
+		<monster name="Squid Warden" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="905" centery="1053" centerz="6" radius="1">
+		<monster name="Icecold Book" x="0" y="0" z="6" spawntime="60" />
+	</monster>
 	<monster centerx="822" centery="1055" centerz="6" radius="1">
 		<monster name="Icecold Book" x="0" y="0" z="6" spawntime="60" />
 	</monster>
 	<monster centerx="824" centery="1055" centerz="6" radius="1">
+		<monster name="Animated Feather" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="903" centery="1055" centerz="6" radius="1">
+		<monster name="Squid Warden" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="905" centery="1055" centerz="6" radius="1">
+		<monster name="Icecold Book" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="903" centery="1057" centerz="6" radius="1">
+		<monster name="Icecold Book" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="905" centery="1057" centerz="6" radius="1">
+		<monster name="Animated Feather" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="903" centery="1059" centerz="6" radius="1">
+		<monster name="Icecold Book" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="905" centery="1059" centerz="6" radius="1">
 		<monster name="Animated Feather" x="0" y="0" z="6" spawntime="60" />
 	</monster>
 	<monster centerx="830" centery="1060" centerz="6" radius="1">
@@ -504,16 +528,40 @@
 	<monster centerx="824" centery="1091" centerz="6" radius="1">
 		<monster name="Burning Book" x="0" y="0" z="6" spawntime="60" />
 	</monster>
+	<monster centerx="903" centery="1091" centerz="6" radius="1">
+		<monster name="Guardian Of Tales" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="905" centery="1091" centerz="6" radius="1">
+		<monster name="Ink Blob" x="0" y="0" z="6" spawntime="60" />
+	</monster>
 	<monster centerx="822" centery="1093" centerz="6" radius="1">
 		<monster name="Guardian Of Tales" x="0" y="0" z="6" spawntime="60" />
 	</monster>
 	<monster centerx="824" centery="1093" centerz="6" radius="1">
 		<monster name="Ink Blob" x="0" y="0" z="6" spawntime="60" />
 	</monster>
+	<monster centerx="903" centery="1093" centerz="6" radius="1">
+		<monster name="Rage Squid" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="905" centery="1093" centerz="6" radius="1">
+		<monster name="Burning Book" x="0" y="0" z="6" spawntime="60" />
+	</monster>
 	<monster centerx="822" centery="1095" centerz="6" radius="1">
 		<monster name="Rage Squid" x="0" y="0" z="6" spawntime="60" />
 	</monster>
 	<monster centerx="824" centery="1095" centerz="6" radius="1">
+		<monster name="Burning Book" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="903" centery="1095" centerz="6" radius="1">
+		<monster name="Guardian Of Tales" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="905" centery="1095" centerz="6" radius="1">
+		<monster name="Ink Blob" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="903" centery="1097" centerz="6" radius="1">
+		<monster name="Rage Squid" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="905" centery="1097" centerz="6" radius="1">
 		<monster name="Burning Book" x="0" y="0" z="6" spawntime="60" />
 	</monster>
 	<monster centerx="830" centery="1098" centerz="6" radius="1">
@@ -1158,10 +1206,34 @@
 	<monster centerx="825" centery="1165" centerz="6" radius="1">
 		<monster name="Brachiodemon" x="0" y="0" z="6" spawntime="60" />
 	</monster>
+	<monster centerx="904" centery="1165" centerz="6" radius="1">
+		<monster name="Infernal Demon" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="906" centery="1165" centerz="6" radius="1">
+		<monster name="Infernal Demon" x="0" y="0" z="6" spawntime="60" />
+	</monster>
 	<monster centerx="823" centery="1167" centerz="6" radius="1">
 		<monster name="Brachiodemon" x="0" y="0" z="6" spawntime="60" />
 	</monster>
 	<monster centerx="825" centery="1167" centerz="6" radius="1">
+		<monster name="Infernal Phantom" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="904" centery="1167" centerz="6" radius="1">
+		<monster name="Infernal Demon" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="906" centery="1167" centerz="6" radius="1">
+		<monster name="Infernal Demon" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="904" centery="1169" centerz="6" radius="1">
+		<monster name="Brachiodemon" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="906" centery="1169" centerz="6" radius="1">
+		<monster name="Brachiodemon" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="904" centery="1171" centerz="6" radius="1">
+		<monster name="Brachiodemon" x="0" y="0" z="6" spawntime="60" />
+	</monster>
+	<monster centerx="906" centery="1171" centerz="6" radius="1">
 		<monster name="Infernal Phantom" x="0" y="0" z="6" spawntime="60" />
 	</monster>
 	<monster centerx="831" centery="1172" centerz="6" radius="1">
