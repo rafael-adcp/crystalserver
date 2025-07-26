@@ -12,4 +12,18 @@
 		<colors colordark="#735D10" colorlight="#8B6D05" />
 		<details displaypriority="6" isseasonal="0" specialevent="0" />
 	</event>
+
+	<event name="XP EVENT" startdate="24/07/2025" enddate="01/08/2025" script="" >
+		<ingame exprate="400" lootrate="100" bosslootrate="100" spawnrate="100" skillrate="200" />
+		<description description="Otserver br example 2 description 50% less exp, triple loot !chance!, 50% faster spawn and regular skill" />
+		<colors colordark="#735D10" colorlight="#8B6D05" />
+		<details displaypriority="6" isseasonal="0" specialevent="0" />
+	</event>
+
+	<event name="XP EVENT" startdate="07/24/2025" enddate="09/01/2025" script="" >
+		<ingame exprate="400" lootrate="100" bosslootrate="100" spawnrate="100" skillrate="200" />
+		<description description="Otserver br example 2 description 50% less exp, triple loot !chance!, 50% faster spawn and regular skill" />
+		<colors colordark="#735D10" colorlight="#8B6D05" />
+		<details displaypriority="6" isseasonal="0" specialevent="0" />
+	</event>
 </events>
