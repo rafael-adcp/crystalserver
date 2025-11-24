@@ -109,6 +109,9 @@ local function playerAddContainerItem(params, item)
 		local itemid = rewardEntry[1]
 		local count = rewardEntry[2]
 		local addedItem = reward:addItem(itemid, count)
+		if addedItem and ItemType(itemid):isKey() and params.action then
+			addedItem:setActionId(params.action)
+		end
 		if attribute and addedItem then
 			addedItem:setAttribute(ITEM_ATTRIBUTE_TEXT, attribute.text)
 		end

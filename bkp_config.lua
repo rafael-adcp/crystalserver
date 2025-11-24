@@ -70,6 +70,20 @@ blackSkulledDeathMana = 0
 fieldOwnershipDuration = 5 * 1000
 loginProtectionPeriod = 10 * 1000
 
+-- Guilds
+-- ingameGuildManagement: set true to enable in-game guild commands.
+-- guildWarsDefaultFrags: Default frags for guild war invitations if not specified.
+-- guildWarsMinimunFrags: Minimum frags required to initiate a guild war.
+-- levelToFormGuild: Minimum level required to create a guild.
+-- createGuildOnlyPremium: Only premium players can create guilds.
+ingameGuildManagement = true
+toggleGuildWars = false
+guildWarsDefaultFrags = 100
+guildWarsMinimunFrags = 10
+levelToFormGuild = 8
+createGuildOnlyPremium = true
+
+-- Clean system
 cleanProtectionZones = false
 
 -- Connection Config
@@ -91,6 +105,8 @@ replaceKickOnLogin = true
 maxPacketsPerSecond = 25
 maxPlayersOnlinePerAccount = 1
 maxPlayersOutsidePZPerAccount = 1
+toggleMaxConnectionsByIP = false
+maxIPConnections = 3
 
 -- Packet Compression
 -- Minimize network bandwith and reduce ping
@@ -297,7 +313,6 @@ onlyPremiumAccount = false
 -- NOTE: startStreakLevel will make a reward streak level for new players who never logged in
 -- NOTE: if showLootsInBestiary is true, will cause all loots to be shown in the bestiary even if the player has not reached the required number of kills
 -- NOTE: minTownIdToBankTransferFromMain blocks towns less than defined from receiving money transfers
-stashMoving = false
 depotChest = 4
 autoLoot = true
 autoBank = false
@@ -315,6 +330,12 @@ enablePlayerPutItemInAmmoSlot = false
 startStreakLevel = 0
 showLootsInBestiary = false
 minTownIdToBankTransferFromMain = 4
+
+-- Stash
+-- NOTE: stashMoving = true, stow an container inside your stash
+-- NOTE: stashManageAmount = max items add/remove from stash at once
+stashMoving = false
+stashManageAmount = 100000
 
 -- Special tiles and Free Town
 -- NOTE: Special tiles and free town ID are independent.
@@ -408,6 +429,7 @@ houseLoseAfterInactivity = 30 -- days; 0 = never
 onlyInvitedCanMoveHouseItems = true
 togglehouseTransferOnRestart = true
 bedsOnlyPremium = true
+maxHousesLimit = 3
 
 -- Item Usage
 timeBetweenActions = 200
@@ -679,4 +701,18 @@ metricsPrometheusAddress = "0.0.0.0:9464"
 --- OStream
 metricsEnableOstream = false
 metricsOstreamInterval = 1000
+
+-- OTC Features
+-- NOTE: Features added in this list will be forced to be used on OTCR
+-- These features can be found in "modules/gamelib/const.lua"
+OTCRFeatures = {
+    enableFeature = { 
+        101, -- g_game.enableFeature(GameItemShader)
+        102, -- g_game.enableFeature(GameCreatureAttachedEffect)
+        103, -- g_game.enableFeature(GameCreatureShader)
+        118  -- g_game.enableFeature(GameWingsAurasEffectsShader)
+    },
+    disableFeature = {
+    }
+}
 

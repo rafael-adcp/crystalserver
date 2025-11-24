@@ -81,7 +81,7 @@ keywordHandler:addKeyword({ "job" }, StdModule.say, {
 keywordHandler:addKeyword({ "doors" }, StdModule.say, {
 	npcHandler = npcHandler,
 	text = "Behind each of those doors, the equipment and skills of one vocation lies - \z
-        {sorcerer}, {paladin}, {knight}, {monk} or {druid}. ...",
+        {sorcerer}, {paladin}, {knight}, or {druid}. ...",
 	"When you have reached level 8, you can choose your definite vocation. You have to talk to me to receive it, \z
         and then you may open one of the doors, take up your vocation's gear, and leave the island. But be aware: ...",
 	"Once you have chosen your vocation and stepped through a door, you cannot go back or choose a different vocation. \z
@@ -127,7 +127,6 @@ local topicTable = {
 	[6] = VOCATION.ID.PALADIN,
 	[7] = VOCATION.ID.DRUID,
 	[8] = VOCATION.ID.SORCERER,
-	[9] = VOCATION.ID.MONK,
 }
 
 local vocationRoomPositions = {
@@ -135,7 +134,6 @@ local vocationRoomPositions = {
 	[6] = { x = 32059, y = 31884, z = 6 },
 	[7] = { x = 32073, y = 31884, z = 6 },
 	[8] = { x = 32054, y = 31884, z = 6 },
-	[9] = { x = 32064, y = 31884, z = 6 }, -- Monk use same of Knight
 }
 
 local function creatureSayCallback(npc, creature, type, message)
@@ -150,7 +148,7 @@ local function creatureSayCallback(npc, creature, type, message)
 
 	local vocationDefaultMessages = {
 		"A vocation is your profession and destiny, determining your skills and way of fighting. \z
-            There are five vocations in Tibia: {knight}, {monk}, {sorcerer}, {paladin} or {druid}. \z
+            There are five vocations in Tibia: {knight}, {sorcerer}, {paladin} or {druid}. \z
             Each one has its unique special abilities. ... ",
 		"When you leave the outpost through one of the five gates upstairs, you will be equipped with \z
             training gear of a specific vocation in order to defend yourself against the monsters outside. ... ",
@@ -216,12 +214,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		npcHandler:setTopic(playerId, 3)
 		-- knight or monk
 	elseif MsgContains(message, "close") and npcHandler:getTopic(playerId) == 2 then
-		npcHandler:say({
-			"You have two possible paths: the {vocation} of a knight, or the {vocation} of a monk. ...",
-			"Knights are the toughest of all vocations, able to take more damage and carry more items than others. ...",
-			"Monks are skilled martial artists, relying on their fists and agility to defeat their foes. Monks can dodge attacks and fight unarmed with great mastery. ...",
-			"So tell me: DO YOU WISH TO BECOME A VALIANT KNIGHT, or a DEVOTED MONK? Answer with {KNIGHT} or {MONK} to decide!",
-		}, npc, creature, 10)
+		npcHandler:say({}, npc, creature, 10)
 		npcHandler:setTopic(playerId, 10)
 		-- Paladin
 	elseif MsgContains(message, "bow") or MsgContains(message, "spear") and npcHandler:getTopic(playerId) == 3 then
@@ -268,7 +261,7 @@ local function creatureSayCallback(npc, creature, type, message)
 		}, npc, creature, 10)
 		npcHandler:setTopic(playerId, 8)
 	elseif MsgContains(message, "decided") and npcHandler:getTopic(playerId) == 0 then
-		npcHandler:say("So tell me, which {vocation} do you want to choose: {knight}, {monk}, {sorcerer}, {paladin} or {druid}?", npc, creature)
+		npcHandler:say("So tell me, which {vocation} do you want to choose: {knight}, {sorcerer}, {paladin} or {druid}?", npc, creature)
 	elseif MsgContains(message, "sorcerer") and npcHandler:getTopic(playerId) == 0 then
 		local message = {
 			"Sorcerers are powerful casters of death, energy and fire magic. \z
@@ -333,20 +326,9 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 0)
 		end
 		npcHandler:say(message, npc, creature, 10)
-	elseif MsgContains(message, "monk") and (npcHandler:getTopic(playerId) == 0 or npcHandler:getTopic(playerId) == 10) then
-		local message = {
-			"Monks are devoted martial artists, using their fists, speed and spiritual strength to fight. ...",
-			"They can dodge attacks, deliver powerful strikes, and heal themselves using their inner power. ...",
-			"Monks cannot carry as many items as knights, but are more agile and can avoid more hits. ...",
-			"If you wish to walk the path of discipline and spiritual combat, you should choose the monk vocation.",
-			"So tell me: DO YOU WISH TO BECOME A DEVOTED MONK? Answer with a proud {YES} if that is your choice!",
-		}
-		if player:getLevel() >= 8 then
-			npcHandler:setTopic(playerId, 9)
-		else
-			npcHandler:setTopic(playerId, 0)
-		end
-		npcHandler:say(message, npc, creature, 10)
+	elseif MsgContains(message, "monk") and npcHandler:getTopic(playerId) == 0 then
+		npcHandler:say("If you are interested in becoming a monk, please speak to Ambassador Manop.", npc, creature)
+		npcHandler:setTopic(playerId, 0)
 	elseif npcHandler:getTopic(playerId) >= 5 and npcHandler:getTopic(playerId) <= 9 then
 		if MsgContains(message, "yes") then
 			for index, value in pairs(topicTable) do
@@ -376,10 +358,10 @@ local function creatureSayCallback(npc, creature, type, message)
 			npcHandler:setTopic(playerId, 0)
 		elseif MsgContains(message, "no") then
 			local vocationMessage = {
-				[5] = "{monk}, {paladin}, {sorcerer} or {druid}",
-				[6] = "{knight}, {monk}, {sorcerer} or {druid}",
-				[7] = "{knight}, {monk}, {paladin} or {sorcerer}",
-				[8] = "{knight}, {monk}, {paladin} or {druid}",
+				[5] = "{paladin}, {sorcerer} or {druid}",
+				[6] = "{knight}, {sorcerer} or {druid}",
+				[7] = "{knight}, {paladin} or {sorcerer}",
+				[8] = "{knight}, {paladin} or {druid}",
 				[9] = "{knight}, {paladin}, {sorcerer} or {druid}",
 			}
 			npcHandler:say({

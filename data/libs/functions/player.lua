@@ -346,12 +346,15 @@ function Player:CreateFamiliarSpell(spellId)
 		reduction = (reduction > summonDuration and summonDuration) or reduction
 		cooldown = cooldown - reduction * 60
 	end
-	condition:setTicks(1000 * cooldown / configManager.getFloat(configKeys.RATE_SPELL_COOLDOWN))
-	self:addCondition(condition)
 
-	self:createFamiliar(familiarName, summonDuration)
+	local createdSuccessfully = self:createFamiliar(familiarName, summonDuration)
+	if createdSuccessfully then
+		condition:setTicks(1000 * cooldown / configManager.getFloat(configKeys.RATE_SPELL_COOLDOWN))
+		self:addCondition(condition)
+		return true
+	end
 
-	return true
+	return false
 end
 
 function Player:createFamiliar(familiarName, timeLeft)
@@ -944,4 +947,31 @@ function Player.findItemInInbox(self, itemId, name)
 		end
 	end
 	return nil
+end
+
+function Player.saveLoginLog(self)
+	local timestamp = os.date("%Y-%m-%d %H:%M:%S")
+	local ipAddress = Game.convertIpToString(self:getIp())
+	local protocolVersion = self:getClient().version
+	local playerName = self:getName()
+	local playerLevel = self:getLevel()
+	local playerVocation = self:getVocation():getName()
+
+	local filePath = string.format("%s/logs/logins/%s.txt", CORE_DIRECTORY, playerName)
+	local file = io.open(filePath, "a")
+	if not file then
+		return true
+	end
+
+	io.output(file)
+	io.write(string.format("Timestamp: %s\n", timestamp))
+	io.write(string.format("IP: %s\n", ipAddress or "unknown"))
+	io.write(string.format("Protocol Version: %s\n", protocolVersion or "unknown"))
+	io.write(string.format("Level: %d\n", playerLevel))
+	io.write(string.format("Vocation: %s\n", playerVocation))
+	io.write("------------------------------\n")
+	io.close(file)
+
+	logger.info("Player {} logged in (IP: {} | Protocol: {} | Level: {} | Vocation: {})", playerName, ipAddress, protocolVersion, playerLevel, playerVocation)
+	return true
 end
