@@ -102,7 +102,7 @@ serverName = "Arkanium"
 serverMotd = "Welcome to the Server!"
 statusTimeout = 5 * 1000
 replaceKickOnLogin = true
-maxPacketsPerSecond = 25
+maxPacketsPerSecond = 50
 maxPlayersOnlinePerAccount = 1
 maxPlayersOutsidePZPerAccount = 1
 toggleMaxConnectionsByIP = false
@@ -444,7 +444,7 @@ pushDistanceDelay = 1500
 pushWhenAttacking = false
 
 -- UI Exhaustation (client actions)
-uiActionsDelay = 300
+uiActionsDelay = 0
 marketActionsDelay = 1200
 imbueActionsDelay = 1500
 
@@ -562,7 +562,7 @@ globalServerSaveTime = "06:00:00"
 -- rateLoot to avoid losing all rare items when
 -- the corpse size is less than the total of loots
 -- the monster can drop
-sortLootByChance = true
+sortLootByChance = false
 
 -- Screenshots
 -- Set enableScreenshots to true to anable game screenshots.
@@ -576,7 +576,7 @@ rateUseStages = true
 lowLevelBonusExp = 50
 rateExp = 1.8 -- tweak here for double exp
 rateSkill = 1.5
-rateLoot = 3 -- ok
+rateLoot = 5 -- ok
 rateMagic = 3
 rateSpawn = 2
 
